@@ -66,16 +66,7 @@ javac SistemKasirApp.java
 java SistemKasirApp
 ````
 
----
 
-## 🧾 Contoh Output
-
-```
-Kasir Aryan memulai transaksi baru.
-Transaksi selesai. Total yang harus dibayar: Rp 22000.0
-```
-
----
 
 ## 🧱 Konsep OOP yang Diterapkan
 
