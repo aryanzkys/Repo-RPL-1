@@ -1,64 +1,82 @@
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Kasir {
-    private String namaKasir;
-    private String idKasir;
-    private List<Transaksi> daftarTransaksi;
+    private final String idKasir;
+    private final String namaKasir;
+    private final String username;
+    private final String password;
+    private final List<Transaksi> riwayatTransaksi;
 
-    public Kasir(String namaKasir, String idKasir) {
-        this.namaKasir = namaKasir;
+    public Kasir(String idKasir, String namaKasir, String username, String password) {
         this.idKasir = idKasir;
-        this.daftarTransaksi = new ArrayList<>();
+        this.namaKasir = namaKasir;
+        this.username = username;
+        this.password = password;
+        this.riwayatTransaksi = new CopyOnWriteArrayList<>();
     }
 
     public String getNamaKasir() {
         return namaKasir;
     }
 
-    public void setNamaKasir(String namaKasir) {
-        this.namaKasir = namaKasir;
-    }
-
     public String getIdKasir() {
         return idKasir;
     }
 
-    public void setIdKasir(String idKasir) {
-        this.idKasir = idKasir;
+    public String getUsername() {
+        return username;
     }
 
-    public List<Transaksi> getDaftarTransaksi() {
-        return daftarTransaksi;
+    public boolean cocokkanKredensial(String username, String password) {
+        if (username == null || password == null) {
+            return false;
+        }
+        return this.username.equalsIgnoreCase(username) && this.password.equals(password);
     }
 
-    public void tambahTransaksi(Transaksi transaksi) {
-        daftarTransaksi.add(transaksi);
+    public List<Transaksi> getRiwayatTransaksi() {
+        return Collections.unmodifiableList(riwayatTransaksi);
     }
 
     public void tampilkanSemuaTransaksi() {
-        System.out.println("=== Daftar Transaksi oleh " + namaKasir + " ===");
-        for (Transaksi t : daftarTransaksi) {
-            System.out.println("Kode Transaksi: " + t.getKodeTransaksi());
-            System.out.println("Tanggal: " + t.getTanggal());
-            System.out.println("Total: Rp" + t.hitungTotal());
+        System.out.println("=== Riwayat Transaksi Kasir " + namaKasir + " ===");
+        if (riwayatTransaksi.isEmpty()) {
+            System.out.println("(Belum ada transaksi)");
+            return;
+        }
+        for (Transaksi transaksi : riwayatTransaksi) {
+            transaksi.tampilkanDetail();
             System.out.println("------------------------------");
         }
     }
 
-    public double hitungTotalPenjualan() {
+    public double hitungTotalPenjualanSelesai() {
         double total = 0;
-        for (Transaksi t : daftarTransaksi) {
-            total += t.hitungTotal();
+        for (Transaksi transaksi : riwayatTransaksi) {
+            if (transaksi.getStatus() == Transaksi.StatusTransaksi.COMPLETED) {
+                total += transaksi.hitungTotal();
+            }
         }
         return total;
     }
 
-    public void selesaikanTransaksi(Transaksi transaksi, String metodePembayaran) {
-        tambahTransaksi(transaksi);
-        System.out.println("Kasir " + namaKasir + " menyelesaikan transaksi.");
-        System.out.println("Metode pembayaran: " + metodePembayaran);
-        System.out.println("Total dibayar: Rp" + transaksi.hitungTotal());
+    public boolean selesaikanTransaksi(Transaksi transaksi, String metodePembayaran, Inventory inventory, RiwayatTransaksi riwayatGlobal) {
+        if (transaksi == null || inventory == null) {
+            return false;
+        }
+        if (metodePembayaran != null && !metodePembayaran.isBlank()) {
+            transaksi.pilihMetodePembayaran(metodePembayaran);
+        }
+        boolean berhasil = transaksi.selesaikan(inventory);
+        if (berhasil) {
+            riwayatTransaksi.add(transaksi);
+            if (riwayatGlobal != null) {
+                riwayatGlobal.simpanTransaksi(this, transaksi);
+            }
+        }
+        return berhasil;
     }
 
     @Override
