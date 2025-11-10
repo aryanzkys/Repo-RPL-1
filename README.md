@@ -11,16 +11,16 @@ Proyek ini dikembangkan untuk memenuhi tugas **LK02 - Implementasi Perangkat Lun
 ---
 
 ## ⚙️ Fitur Utama
-1. **Login Kasir** – Autentikasi user kasir dengan username & password untuk memulai sesi kerja.
-2. **Mulai Transaksi Baru** – Membuat transaksi baru dengan status `PENDING` dan cap waktu.
-3. **Input Barang** – Menambahkan atau memperbarui item transaksi berdasarkan kode barang & jumlah.
-4. **Hitung Total Harga** – Menghitung subtotal per item dan total keseluruhan secara otomatis.
-5. **Penerapan Diskon** – Validasi kode diskon dengan dukungan persentase/potongan dan batas maksimal.
-6. **Pilih Metode Pembayaran** – Menetapkan metode pembayaran (cash, card, e-wallet) sebelum checkout.
-7. **Selesaikan Transaksi** – Mengubah status menjadi `COMPLETED`, mencatat waktu selesai, dan memperbarui stok.
-8. **Update Stok Barang** – Menjaga stok barang secara thread-safe ketika transaksi selesai.
-9. **Simpan Riwayat Transaksi** – Menyimpan transaksi yang selesai ke riwayat kasir dan riwayat global.
-10. **Dukungan Multi-Kasir (Concurrency)** – Banyak kasir dapat aktif bersamaan melalui sesi berbeda tanpa konflik data.
+1. **Login Kasir** - Autentikasi user kasir dengan username & password untuk memulai sesi kerja.
+2. **Mulai Transaksi Baru** - Membuat transaksi baru dengan status `PENDING` dan cap waktu.
+3. **Input Barang** - Menambahkan atau memperbarui item transaksi berdasarkan kode barang & jumlah.
+4. **Hitung Total Harga** - Menghitung subtotal per item dan total keseluruhan secara otomatis.
+5. **Penerapan Diskon** - Validasi kode diskon dengan dukungan persentase/potongan dan batas maksimal.
+6. **Pilih Metode Pembayaran** - Menetapkan metode pembayaran (cash, card, e-wallet) sebelum checkout.
+7. **Selesaikan Transaksi** - Mengubah status menjadi `COMPLETED`, mencatat waktu selesai, dan memperbarui stok.
+8. **Update Stok Barang** - Menjaga stok barang secara thread-safe ketika transaksi selesai.
+9. **Simpan Riwayat Transaksi** - Menyimpan transaksi yang selesai ke riwayat kasir dan riwayat global.
+10. **Dukungan Multi-Kasir (Concurrency)** - Banyak kasir dapat aktif bersamaan melalui sesi berbeda tanpa konflik data.
 
 ---
 
@@ -100,10 +100,10 @@ Total pembayaran: Rp45000.0
 ---
 
 ## 🧱 Konsep OOP & Praktik Baik
-- **Encapsulation** – Atribut privat dengan akses melalui getter/setter/metode domain.
-- **Single Responsibility** – Setiap kelas fokus pada domain spesifik (inventory, diskon, sesi, dst.).
-- **Thread Safety** – `AtomicInteger`, `ConcurrentHashMap`, dan `CopyOnWriteArrayList` memastikan multi-kasir aman.
-- **Immutability & Snapshot** – `ItemTransaksi` menyimpan snapshot sehingga riwayat tetap konsisten meskipun data barang berubah.
+- **Encapsulation** - Atribut privat dengan akses melalui getter/setter/metode domain.
+- **Single Responsibility** - Setiap kelas fokus pada domain spesifik (inventory, diskon, sesi, dst.).
+- **Thread Safety** - `AtomicInteger`, `ConcurrentHashMap`, dan `CopyOnWriteArrayList` memastikan multi-kasir aman.
+- **Immutability & Snapshot** - `ItemTransaksi` menyimpan snapshot sehingga riwayat tetap konsisten meskipun data barang berubah.
 
 ---
 
